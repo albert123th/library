@@ -1,0 +1,13 @@
+library-management/
+├── public/
+│   └── index.html
+└── /home
+└──/login
+└──signup
+└──logout
+└──etc
+
+https://script.google.com/macros/s/AKfycbzhjR6nWv4LSwoSglehwTc3l4pHa9vFZ2wy1OwzDBFDXL7OxH97xzZOIStgiipEy24J/exec
+
+AKfycbzhjR6nWv4LSwoSglehwTc3l4pHa9vFZ2wy1OwzDBFDXL7OxH97xzZOIStgiipEy24J
+

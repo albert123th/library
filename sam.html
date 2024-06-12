@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Management</title>
+</head>
+<body>
+    <h1>Library Management</h1>
+
+    <!-- Form to Add a Book -->
+    <div>
+        <h2>Add Book</h2>
+        <form id="addBookForm">
+            <input type="text" id="bookID" placeholder="Book ID" required>
+            <input type="text" id="title" placeholder="Title" required>
+            <input type="text" id="author" placeholder="Author" required>
+            <input type="number" id="quantity" placeholder="Quantity" required>
+            <input type="number" id="price" placeholder="Price" required>
+            <button type="button" onclick="addBook()">Add Book</button>
+        </form>
+    </div>
+
+    <!-- Form to Remove a Book -->
+    <div>
+        <h2>Remove Book</h2>
+        <form id="removeBookForm">
+            <input type="text" id="removeBookID" placeholder="Book ID" required>
+            <button type="button" onclick="removeBook()">Remove Book</button>
+        </form>
+    </div>
+
+    <!-- Form to Buy a Book -->
+    <div>
+        <h2>Buy Book</h2>
+        <form id="buyBookForm">
+            <input type="text" id="buyBookID" placeholder="Book ID" required>
+            <input type="text" id="userID" placeholder="User ID" required>
+            <button type="button" onclick="buyBook()">Buy Book</button>
+        </form>
+    </div>
+
+    <!-- Button to Get All Books -->
+    <div>
+        <h2>All Books</h2>
+        <button type="button" onclick="getBooks()">Get All Books</button>
+        <pre id="booksList"></pre>
+    </div>
+
+    <!-- Button to Get All Transactions -->
+    <div>
+        <h2>Transactions</h2>
+        <button type="button" onclick="getTransactions()">Get Transactions</button>
+        <pre id="transactionsList"></pre>
+    </div>
+
+    <!-- JavaScript to Handle Form Submissions and API Calls -->
+    <script>
+        // Function to make API calls to Google Apps Script
+        function makeAPICall(action, data, callback) {
+            const url = 'https://script.google.com/macros/s/AKfycbzhjR6nWv4LSwoSglehwTc3l4pHa9vFZ2wy1OwzDBFDXL7OxH97xzZOIStgiipEy24J/exec'; // Replace with your Google Apps Script web app URL
+            
+            // Send POST request to the web app URL
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ action: action, data: data }),
+            })
+            .then(response => response.json())
+            .then(data => callback(data))
+            .catch(error => console.error('Error:', error));
+        }
+
+        // Function to add a book
+        function addBook() {
+            const bookID = document.getElementById('bookID').value;
+            const title = document.getElementById('title').value;
+            const author = document.getElementById('author').value;
+            const quantity = document.getElementById('quantity').value;
+            const price = document.getElementById('price').value;
+
+            // Call makeAPICall function with action 'addBook' and book data
+            makeAPICall('addBook', { BookID: bookID, Title: title, Author: author, Quantity: quantity, Price: price }, function(response) {
+                alert(response.message); // Show alert with response message
+            });
+        }
+
+        // Function to remove a book
+        function removeBook() {
+            const bookID = document.getElementById('removeBookID').value;
+
+            // Call makeAPICall function with action 'removeBook' and book ID
+            makeAPICall('removeBook', { BookID: bookID }, function(response) {
+                alert(response.message); // Show alert with response message
+            });
+        }
+
+        // Function to buy a book
+        function buyBook() {
+            const bookID = document.getElementById('buyBookID').value;
+            const userID = document.getElementById('userID').value;
+
+            // Call makeAPICall function with action 'buyBook' and book and user IDs
+            makeAPICall('buyBook', { BookID: bookID, UserID: userID }, function(response) {
+                alert(response.message); // Show alert with response message
+            });
+        }
+
+        // Function to get all books
+        function getBooks() {
+            // Call makeAPICall function with action 'getBooks'
+            makeAPICall('getBooks', {}, function(response) {
+                document.getElementById('booksList').textContent = JSON.stringify(response.books, null, 2); // Display books list in pre element
+            });
+        }
+
+        // Function to get all transactions
+        function getTransactions() {
+            // Call makeAPICall function with action 'getTransactions'
+            makeAPICall('getTransactions', {}, function(response) {
+                document.getElementById('transactionsList').textContent = JSON.stringify(response.transactions, null, 2); // Display transactions list in pre element
+            });
+        }
+    </script>
+</body>
+</html>
